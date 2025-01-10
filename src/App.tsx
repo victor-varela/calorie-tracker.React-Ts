@@ -1,7 +1,13 @@
+import Form from "./components/Form";
+
 function App() {
   return (
     <>
-      <h1 className="text-3xl font-bold underline">calorie tracker</h1>
+      <header className="bg-lime-600 w-full p-5 flex justify-around">
+        <h1 className="font-bold text-white uppercase text-xl">Contador de Calorias</h1>
+        <button>Reiniciar App</button>
+      </header>
+      <Form />
     </>
   );
 }
