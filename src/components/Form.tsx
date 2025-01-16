@@ -8,7 +8,10 @@ const Form = () => {
     calories: 0,
   });
 
-  const handelChange = e => {
+  //Los type de e lo sacamos de Vs Code y usamos un pipe | para indicar que puede ser o tipo SelectElement o InputElement
+  const handelChange = (e: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e);
+
     setFormData({
       ...formData,
       [e.target.id]: e.target.value,
@@ -43,7 +46,7 @@ const Form = () => {
           className="border rounded-lg border-slate-300 bg-white w-full p-2 "
           id="name"
           placeholder="Ej. Pesas, Yoga, Trote"
-          value={formData.activity}
+          value={formData.name}
           onChange={handelChange}
         />
       </div>
