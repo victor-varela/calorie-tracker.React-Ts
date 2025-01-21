@@ -18,6 +18,12 @@ const Form = () => {
     });
   };
 
+  const isValidForm = () => {
+    const { name, calories } = formData;
+
+    return name.trim() !== "" && calories > 0;
+  };
+
   return (
     <form className="max-w-4xl bg-white mx-auto border rounded-lg shadow p-8 space-y-3">
       <div className="flex flex-col gap-3">
@@ -66,7 +72,8 @@ const Form = () => {
       <input
         type="submit"
         value="Guardar Comida o Guardar ejercicio"
-        className="w-full bg-gray-800 hover:bg-gray-900 font-bold text-white uppercase rounded p-2 cursor-pointer"
+        className="w-full bg-gray-800 hover:bg-gray-900 font-bold text-white uppercase rounded p-2 cursor-pointer disabled:opacity-10 disabled:cursor-not-allowed"
+        disabled={!isValidForm()}
       />
     </form>
   );
