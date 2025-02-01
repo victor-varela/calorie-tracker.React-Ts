@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { categories } from "../data/data";
+import type { FormData } from "../types";
 
 const Form = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     category: 1,
     name: "",
     calories: 0,
@@ -21,12 +22,17 @@ const Form = () => {
   //ESta funcion devuelve true cuando cumple la condicion*
   const isValidForm = () => {
     const { name, calories } = formData;
-    
-    return name.trim() !=='' && calories > 0;
+
+    return name.trim() !== "" && calories > 0;
+  };
+
+  const handelSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("submit...");
   };
 
   return (
-    <form className="max-w-4xl bg-white mx-auto border rounded-lg shadow p-8 space-y-3">
+    <form className="max-w-4xl bg-white mx-auto border rounded-lg shadow p-8 space-y-3" onSubmit={handelSubmit}>
       <div className="flex flex-col gap-3">
         <label htmlFor="category" className="font-bold" id="categories">
           Categoria:
@@ -46,13 +52,13 @@ const Form = () => {
       </div>
       <div className="flex flex-col gap-3">
         <label htmlFor="name" className="font-bold">
-          Actividad:
+          {formData.category === 1 ? "Comida:" : "Actividad:"}
         </label>
         <input
           type="text"
           className="border rounded-lg border-slate-300 bg-white w-full p-2 "
           id="name"
-          placeholder="Ej. Pesas, Yoga, Trote"
+          placeholder={formData.category === 1 ? "Ej. Asado, Ensalada, Manzana" : "Ej. Yoga, Pesas, Trote"}
           value={formData.name}
           onChange={handelChange}
         />
@@ -72,7 +78,7 @@ const Form = () => {
       </div>
       <input
         type="submit"
-        value={`guardar  ${formData.category === 1 ? 'comida' : 'ejercicio'}  `}
+        value={`guardar  ${formData.category === 1 ? "comida" : "ejercicio"}  `}
         className="w-full bg-gray-800 hover:bg-gray-900 font-bold text-white uppercase rounded p-2 cursor-pointer disabled:opacity-10 disabled:cursor-not-allowed"
         disabled={!isValidForm()}
       />
