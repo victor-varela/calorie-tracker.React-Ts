@@ -1,18 +1,22 @@
 import { Dispatch, useState } from "react";
+import { v4 as uuidv4 } from "uuid"; //dependencia para Ids
 import { categories } from "../data/data";
 import type { FormData } from "../types";
 import { formDataActions } from "../reducers/formData-reducer";
 
 type FormProps = {
-  dispatch: Dispatch<formDataActions>
-}
+  dispatch: Dispatch<formDataActions>;
+};
 
-const Form = ({dispatch}:FormProps) => {
-  const [formData, setFormData] = useState<FormData>({
-    category: 1,
-    name: "",
-    calories: 0,
-  });
+const initialState: FormData = {
+  id: uuidv4(),
+  category: 1,
+  name: "",
+  calories: 0,
+};
+
+const Form = ({ dispatch }: FormProps) => {
+  const [formData, setFormData] = useState<FormData>(initialState);
 
   //Los type de e lo sacamos de Vs Code y usamos un pipe | para indicar que puede ser o tipo SelectElement o InputElement
   const handelChange = (e: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +39,11 @@ const Form = ({dispatch}:FormProps) => {
     e.preventDefault();
     //Usamos la funcion dispatch
 
-    dispatch({type:'save-activity', payload:{newActivity: formData}})
+    dispatch({ type: "save-activity", payload: { newActivity: formData } });
+    setFormData({
+      ...initialState,
+      id: uuidv4()
+    });
   };
 
   return (
@@ -110,3 +118,5 @@ export default Form;
 //Tenemos en nuestro State propiedades con diferentes tipos de dato. category y calories son number y activity es string. Tenemos que respetar la integridad de esos tipos y en un Form por ser Form, los campos se guardan como string. Ya lo vimos en vieja leccion de Form mas arriba. Entonces, ANTES de guardar los campos en el state tenemos que: 1- Identificar si el campo donde esta el usuario es de tipo number. Si es asi, entonces el dato lo guardamos con la tecnica de signo de + antes de la instruccion. Si no esta en el campo number entonces se guarda asi nomas. En el codigo eso es lo que hace la funcion isNumberField --> nos dice si esta en ese campo el usuario. Como sabemos? por el id del input.Piensa en un arreglo como una lista y en .includes(valor) como preguntar:"¿Esta lista tiene este objeto específico?"
 
 //Funciones logicas del componente: const isNumberField = ["category", "calories"].includes(e.target.id)---> esta funcion devuelve true o false porque nos servimos del metodo includes. La funcion isValidForm TAMBIEN devuelve true o false porque nos servimos del return y la condicion.
+
+//Cuando almacenamos datos (basicamente states) debemos poder enonctrarlos facilmente y para eso usamos IDs. Los states son objetos, por ello creamos la propiedad id en cada nuevo objeto. UUID es una dependencia para crear Ids. Existe la API de Js crypto.randomUUID() para crear Ids nativos

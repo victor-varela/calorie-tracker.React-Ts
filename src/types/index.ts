@@ -4,6 +4,7 @@ export type Category = {
 };
 
 export type FormData = {
+  id: string,
   category: number;
   name: string;
   calories: number;
