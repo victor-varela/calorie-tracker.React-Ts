@@ -1,13 +1,15 @@
+import { Dispatch, useMemo } from "react";
 import { FormData } from "../types";
 import { categories } from "../data/data";
-import { useMemo } from "react";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { formDataActions } from "../reducers/formData-reducer";
 
 type ActivityListProps = {
   activities: FormData[];
+  dispatch : Dispatch<formDataActions>
 };
 
-const ActivityList = ({ activities }: ActivityListProps) => {
+const ActivityList = ({ activities, dispatch }: ActivityListProps) => {
   //Funcion helper para obtener el Name de categoria. UseMemo tiene el callback de la funcion y el callback creado por mi. Primero escribi const categoryName = (..... etc) y luego lo encerre en el useMemo con el array de dependencia activities
   const categoryName = useMemo(
     () => (category: FormData["category"]) => categories.map(cat => (cat.id === category ? cat.name : "")),
@@ -24,6 +26,10 @@ const ActivityList = ({ activities }: ActivityListProps) => {
       return "bg-gray-200";
     }
   };
+
+  const handleEdition = (id: FormData['id'])=>{
+    dispatch({type:'set-activeId', payload:{id: id}})
+  }
 
   return (
     <>
@@ -47,7 +53,9 @@ const ActivityList = ({ activities }: ActivityListProps) => {
           </div>
 
           <div className="flex gap-5 items-center">
-            <button>
+            <button
+              onClick={()=>handleEdition(activity.id)}
+            >
               <PencilSquareIcon className='size-8 text-gray-800' />
             </button>
           </div>
