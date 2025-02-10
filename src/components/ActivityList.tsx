@@ -1,6 +1,7 @@
 import { FormData } from "../types";
 import { categories } from "../data/data";
 import { useMemo } from "react";
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
 type ActivityListProps = {
   activities: FormData[];
@@ -19,6 +20,8 @@ const ActivityList = ({ activities }: ActivityListProps) => {
     }
     if (cat === 2) {
       return "bg-lime-500";
+    } else {
+      return "bg-gray-200";
     }
   };
 
@@ -29,9 +32,9 @@ const ActivityList = ({ activities }: ActivityListProps) => {
         <div key={activity.id} className="px-5 py-10 bg-white mt-5 flex justify-between">
           <div className="space-y-1 relative">
             <p
-              className={`absolute -top-8 -left-8 px-10 py-2 font-bold text-white uppercase ${
-               getCategoryColor(activity.category)
-              }`}
+              className={`absolute -top-8 -left-8 px-10 py-2 font-bold text-white uppercase ${getCategoryColor(
+                activity.category
+              )}`}
             >
               {categoryName(+activity.category)}
             </p>
@@ -43,7 +46,11 @@ const ActivityList = ({ activities }: ActivityListProps) => {
             </p>
           </div>
 
-          <div></div>
+          <div className="flex gap-5 items-center">
+            <button>
+              <PencilSquareIcon className='size-8 text-gray-800' />
+            </button>
+          </div>
         </div>
       ))}
     </>
