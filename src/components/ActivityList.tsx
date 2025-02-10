@@ -13,6 +13,15 @@ const ActivityList = ({ activities }: ActivityListProps) => {
     [activities]
   );
 
+  const getCategoryColor = (cat: FormData["category"]) => {
+    if (cat === 1) {
+      return "bg-orange-500";
+    }
+    if (cat === 2) {
+      return "bg-lime-500";
+    }
+  };
+
   return (
     <>
       <h2 className="text-center font-bold text-4xl text-slate-600">Comida y Actividades</h2>
@@ -20,7 +29,9 @@ const ActivityList = ({ activities }: ActivityListProps) => {
         <div key={activity.id} className="px-5 py-10 bg-white mt-5 flex justify-between">
           <div className="space-y-1 relative">
             <p
-              className={`absolute -top-8 -left-8 px-10 py-2 font-bold text-white uppercase ${categoryName(activity.category)[0] ===''?'bg-orange-500': 'bg-lime-500'}`}
+              className={`absolute -top-8 -left-8 px-10 py-2 font-bold text-white uppercase ${
+               getCategoryColor(activity.category)
+              }`}
             >
               {categoryName(+activity.category)}
             </p>
