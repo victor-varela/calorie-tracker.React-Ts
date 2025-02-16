@@ -58,6 +58,7 @@ Luego los formDataActions son mas descriptivos.
 export type formDataState = {
   activities: FormData[],
   activeId: FormData['id']
+  editing: boolean
 };
 
 /*🔹 1. Definir el estado inicial
@@ -65,7 +66,8 @@ El estado inicial es un objeto o valor que representa el estado antes de cualqui
 
 export const initialState: formDataState = {
   activities: [],
-  activeId: ''
+  activeId: '',
+  editing: false
 };
 // 🔹 2. Definir las acciones:Este type describe las acciones (que TIPO 'type' de accion) del reducer- payload es la informacion que se va a agregar al state. Como son esos datos? un Objeto. por eso lo definimos { } es un objeto que va a tener una nueva actividad o nueva Data y de tipo FormData. Cada Accion tiene 2 partes el type (es la descripcion) y el payload (es la informacion que modifica el state o vamos a agregar al state)
 export type formDataActions = 
@@ -91,14 +93,17 @@ export const formDataReducer = (
         let upDatedActivities: FormData[] = []
         if(state.activeId){
             upDatedActivities= state.activities.map(activity => activity.id === state.activeId ? action.payload.newActivity : activity)
+          
         }else{
             upDatedActivities = [...state.activities, action.payload.newActivity]
+          
         }
 
         return{
             ...state,
             activities: upDatedActivities,
-            activeId : ''
+            activeId : '',
+            editing: false
         }
         
     }
@@ -107,7 +112,8 @@ export const formDataReducer = (
 
         return{
             ...state,
-            activeId: action.payload.id
+            activeId: action.payload.id,
+            editing: true
         }
     }
 
