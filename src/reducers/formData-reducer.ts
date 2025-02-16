@@ -87,12 +87,18 @@ export const formDataReducer = (
     action: formDataActions
 ) => {
     if(action.type === 'save-activity'){
-        //Este codigo maneja la logiaca para actualizar el state. Luego Siempre va return {}
-        
+        //Este codigo maneja la logica para actualizar el state. Luego Siempre va return {}
+        let upDatedActivities: FormData[] = []
+        if(state.activeId){
+            upDatedActivities= state.activities.map(activity => activity.id === state.activeId ? action.payload.newActivity : activity)
+        }else{
+            upDatedActivities = [...state.activities, action.payload.newActivity]
+        }
 
         return{
             ...state,
-            activities: [...state.activities, action.payload.newActivity]
+            activities: upDatedActivities,
+            activeId : ''
         }
         
     }
@@ -124,6 +130,23 @@ activities: [...state.activities, action.payload.newActivity]:
 Se copia el array de activities actual.
 Se agrega una nueva actividad (action.payload.newActivity).
 
+Cuando estamos editando, creamos una variable UpdatedActivities y REESCRIBIMOS la actividad cuando activeId tenga algo y sino AGREGAMOS la newActivity
+
+Reescribir: 
+if(state.activeId){
+            upDatedActivities= state.activities.map(activity => activity.id === state.activeId ? action.payload.newActivity : activity)
+
+Agregar:
+ }else{
+            upDatedActivities = [...state.activities, action.payload.newActivity]
+        }
+
+Retornamos: 
+    return{
+            ...state,
+            activities: upDatedActivities,
+            activeId : ''
+        }
 
 Retorno por defecto:
 return state;
@@ -142,5 +165,9 @@ Así como reduce() en JavaScript convierte un array a un único valor, el reduce
 reducer()--> toma estado actual y una accion
 
 initialSate()--> lo que tiene inicialmente el form {objeto...} en base a las "entradas-interacciones del usuario" se va actualizando el state.. esas acciones se van a REDUCIR a un NUEVO ESTADO, es similar a los valores de inicio de useState
+
+*/
+
+/* Para Editar: usamos map que devuelve un array. Cuando encontramos el id igual al id activo, retornamos ese mismo objeto, es decir, lo reescribimos todo (newActivity tiene todos los campos id, cat, caloroies, name) cuando lo retornamos en UpdatedActivities lo retornamos TODO, con el ID que YA tenia. Si los Ids son diferentes retornamos la misma actividad que esta en el array
 
 */

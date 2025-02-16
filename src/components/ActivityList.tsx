@@ -18,10 +18,10 @@ const ActivityList = ({ activities, dispatch }: ActivityListProps) => {
 
   const getCategoryColor = (cat: FormData["category"]) => {
     if (cat === 1) {
-      return "bg-orange-500";
+      return "bg-lime-500";
     }
     if (cat === 2) {
-      return "bg-lime-500";
+      return "bg-orange-500";
     } else {
       return "bg-gray-200";
     }

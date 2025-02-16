@@ -1,4 +1,4 @@
-import { Dispatch, useEffect, useState } from "react";
+import { Dispatch, useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid"; //dependencia para Ids
 import { categories } from "../data/data";
 import type { FormData } from "../types";
@@ -19,12 +19,16 @@ const initialState: FormData = {
 const Form = ({ dispatch, state }: FormProps) => {
   const [formData, setFormData] = useState<FormData>(initialState);
 
+  const formRef = useRef<HTMLFormElement | null>(null)
   useEffect(() => {
     const selectedActivity = state.activities.find(activity => activity.id === state.activeId); // .filter retorna un array. Colocamos [0] para que sea del mismo type que formData o usar .find pero asegurar que no sea undefined
 
     if (selectedActivity) {
       setFormData(selectedActivity);
     }
+
+    formRef.current?.scrollIntoView({ behavior: "smooth" })
+    
   }, [state.activeId]);
 
   //Los type de e lo sacamos de Vs Code y usamos un pipe | para indicar que puede ser o tipo SelectElement o InputElement
@@ -47,8 +51,10 @@ const Form = ({ dispatch, state }: FormProps) => {
   const handelSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     //Usamos la funcion dispatch
-
+   
     dispatch({ type: "save-activity", payload: { newActivity: formData } });
+
+    //Reinicio Inputs. Tomo una copia de initialState asi react sabe que debe renderizar y creo el nuevo id
     setFormData({
       ...initialState,
       id: uuidv4(),
@@ -56,7 +62,7 @@ const Form = ({ dispatch, state }: FormProps) => {
   };
 
   return (
-    <form className="max-w-4xl bg-white mx-auto border rounded-lg shadow p-8 space-y-3" onSubmit={handelSubmit}>
+    <form className="max-w-4xl bg-white mx-auto border rounded-lg shadow p-8 space-y-3" onSubmit={handelSubmit} ref={formRef}>
       <div className="flex flex-col gap-3">
         <label htmlFor="category" className="font-bold" id="categories">
           Categoria:
