@@ -64,8 +64,14 @@ export type formDataState = {
 /*🔹 1. Definir el estado inicial
 El estado inicial es un objeto o valor que representa el estado antes de cualquier cambio.*/
 
+const localStorageActivities = (): FormData[]=>{
+  const activities =  localStorage.getItem('activities')
+
+ return activities? JSON.parse(activities) : []
+}
+
 export const initialState: formDataState = {
-  activities: [],
+  activities: localStorageActivities(),
   activeId: '',
   editing: false
 };
