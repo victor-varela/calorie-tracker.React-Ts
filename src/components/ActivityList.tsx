@@ -1,7 +1,7 @@
 import { Dispatch, useMemo } from "react";
 import { FormData } from "../types";
 import { categories } from "../data/data";
-import { PencilSquareIcon, TrashIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import { PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { formDataActions } from "../reducers/formData-reducer";
 
 type ActivityListProps = {

@@ -56,30 +56,31 @@ Luego los formDataActions son mas descriptivos.
 */
 
 export type formDataState = {
-  activities: FormData[],
-  activeId: FormData['id']
-  editing: boolean
+  activities: FormData[];
+  activeId: FormData["id"];
+  editing: boolean;
 };
 
 /*🔹 1. Definir el estado inicial
 El estado inicial es un objeto o valor que representa el estado antes de cualquier cambio.*/
 
-const localStorageActivities = (): FormData[]=>{
-  const activities =  localStorage.getItem('activities')
+const localStorageActivities = (): FormData[] => {
+  const activities = localStorage.getItem("activities");
 
- return activities? JSON.parse(activities) : []
-}
+  return activities ? JSON.parse(activities) : [];
+};
 
 export const initialState: formDataState = {
   activities: localStorageActivities(),
-  activeId: '',
-  editing: false
+  activeId: "",
+  editing: false,
 };
 // 🔹 2. Definir las acciones:Este type describe las acciones (que TIPO 'type' de accion) del reducer- payload es la informacion que se va a agregar al state. Como son esos datos? un Objeto. por eso lo definimos { } es un objeto que va a tener una nueva actividad o nueva Data y de tipo FormData. Cada Accion tiene 2 partes el type (es la descripcion) y el payload (es la informacion que modifica el state o vamos a agregar al state)
-export type formDataActions = 
-{type: 'save-activity', payload: { newActivity: FormData }} |
-{type: 'set-activeId', payload: { id: FormData['id'] }} |
-{type: 'delete-activeId', payload: { id: FormData['id'] }} 
+export type formDataActions =
+  | { type: "save-activity"; payload: { newActivity: FormData } }
+  | { type: "set-activeId"; payload: { id: FormData["id"] } }
+  | { type: "delete-activeId"; payload: { id: FormData["id"] } }
+  | { type: "restart-app" };
 
 /*🔹 3. Crear la función reducer
 La función reducer toma dos parámetros:
@@ -91,49 +92,50 @@ Por cada tipo de accion (action.type) se ejecuta una funcion (codigo que actuali
 DISPATCH es quien conecta o DISPARA las ACCIONES del reducer y cada accion lleva un payload. Por eso DISPATCH maneja action.type o action.payload.
 */
 
-export const formDataReducer = (
-    state: formDataState = initialState, 
-    action: formDataActions
-) => {
-    if(action.type === 'save-activity'){
-        //Este codigo maneja la logica para actualizar el state. Luego Siempre va return {}
-        let upDatedActivities: FormData[] = []
-        if(state.activeId){
-            upDatedActivities= state.activities.map(activity => activity.id === state.activeId ? action.payload.newActivity : activity)
-          
-        }else{
-            upDatedActivities = [...state.activities, action.payload.newActivity]
-          
-        }
-
-        return{
-            ...state,
-            activities: upDatedActivities,
-            activeId : '',
-            editing: false
-        }
-        
+export const formDataReducer = (state: formDataState = initialState, action: formDataActions) => {
+  if (action.type === "save-activity") {
+    //Este codigo maneja la logica para actualizar el state. Luego Siempre va return {}
+    let upDatedActivities: FormData[] = [];
+    if (state.activeId) {
+      upDatedActivities = state.activities.map(activity =>
+        activity.id === state.activeId ? action.payload.newActivity : activity
+      );
+    } else {
+      upDatedActivities = [...state.activities, action.payload.newActivity];
     }
 
-    if(action.type === 'set-activeId'){
+    return {
+      ...state,
+      activities: upDatedActivities,
+      activeId: "",
+      editing: false,
+    };
+  }
 
-        return{
-            ...state,
-            activeId: action.payload.id,
-            editing: true
-        }
-    }
+  if (action.type === "set-activeId") {
+    return {
+      ...state,
+      activeId: action.payload.id,
+      editing: true,
+    };
+  }
 
-    if (action.type === 'delete-activeId'){
-      let upDatedActivities =  state.activities.filter(activity => activity.id !== action.payload.id)
-        return{
-            ...state,
-            activities : upDatedActivities
-        }
-    }
+  if (action.type === "delete-activeId") {
+    let upDatedActivities = state.activities.filter(activity => activity.id !== action.payload.id);
+    return {
+      ...state,
+      activities: upDatedActivities,
+    };
+  }
 
+  if (action.type === "restart-app") {
+    return {
+      ...state,
+      activities: [],
+    };
+  }
 
-    return state
+  return state;
 };
 
 /*Explicacion del Reducer:
@@ -175,7 +177,6 @@ Si la acción no es 'save-activity', el reducer simplemente devuelve el estado s
 
 
 */
-
 
 /*El término "reducer" proviene del concepto de reducción en programación funcional. En este contexto, el nombre tiene su origen en el método reduce() que existe en lenguajes como JavaScript, donde una operación se aplica de manera acumulativa sobre una colección para reducirla a un solo valor.
 

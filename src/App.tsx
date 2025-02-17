@@ -10,11 +10,15 @@ function App() {
     localStorage.setItem("activities", JSON.stringify(state.activities));
   }, [state.activities]);
 
+  const restartApp = () => {
+    localStorage.clear();
+    dispatch({type:'restart-app'})
+  };
   return (
     <>
       <header className="bg-lime-600 w-full p-5 flex justify-around">
         <h1 className="font-bold text-white uppercase text-xl">Contador de Calorias</h1>
-        <button>Reiniciar App</button>
+        <button onClick={() => restartApp()}>Reiniciar App</button>
       </header>
       <section className="bg-lime-500 py-20">
         {/* contendor "centrador-brocha gorda" que rodea al Componente */}
