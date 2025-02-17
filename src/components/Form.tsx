@@ -108,7 +108,7 @@ const Form = ({ dispatch, state }: FormProps) => {
       </div>
       <input
         type="submit"
-        value={`${state.editing? 'editar' : 'guardar'} ${formData.category === 1 ? "comida" : "ejercicio"}  `}
+        value={`  ${state.editing? 'editar' : 'guardar'} ${formData.category === 1 ? "comida" : "ejercicio"}  `}
         className="w-full bg-gray-800 hover:bg-gray-900 font-bold text-white uppercase rounded p-2 cursor-pointer disabled:opacity-10 disabled:cursor-not-allowed"
         disabled={!isValidForm()}
       />

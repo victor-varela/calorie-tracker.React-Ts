@@ -72,7 +72,8 @@ export const initialState: formDataState = {
 // 🔹 2. Definir las acciones:Este type describe las acciones (que TIPO 'type' de accion) del reducer- payload es la informacion que se va a agregar al state. Como son esos datos? un Objeto. por eso lo definimos { } es un objeto que va a tener una nueva actividad o nueva Data y de tipo FormData. Cada Accion tiene 2 partes el type (es la descripcion) y el payload (es la informacion que modifica el state o vamos a agregar al state)
 export type formDataActions = 
 {type: 'save-activity', payload: { newActivity: FormData }} |
-{type: 'set-activeId', payload: { id: FormData['id'] }} 
+{type: 'set-activeId', payload: { id: FormData['id'] }} |
+{type: 'delete-activeId', payload: { id: FormData['id'] }} 
 
 /*🔹 3. Crear la función reducer
 La función reducer toma dos parámetros:
@@ -114,6 +115,14 @@ export const formDataReducer = (
             ...state,
             activeId: action.payload.id,
             editing: true
+        }
+    }
+
+    if (action.type === 'delete-activeId'){
+      let upDatedActivities =  state.activities.filter(activity => activity.id !== action.payload.id)
+        return{
+            ...state,
+            activities : upDatedActivities
         }
     }
 

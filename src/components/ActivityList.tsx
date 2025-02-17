@@ -1,12 +1,12 @@
 import { Dispatch, useMemo } from "react";
 import { FormData } from "../types";
 import { categories } from "../data/data";
-import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { PencilSquareIcon, TrashIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { formDataActions } from "../reducers/formData-reducer";
 
 type ActivityListProps = {
   activities: FormData[];
-  dispatch : Dispatch<formDataActions>
+  dispatch: Dispatch<formDataActions>;
 };
 
 const ActivityList = ({ activities, dispatch }: ActivityListProps) => {
@@ -27,9 +27,9 @@ const ActivityList = ({ activities, dispatch }: ActivityListProps) => {
     }
   };
 
-  const handleEdition = (id: FormData['id'])=>{
-    dispatch({type:'set-activeId', payload:{id: id}})
-  }
+  const handleEdition = (id: FormData["id"]) => {
+    dispatch({ type: "set-activeId", payload: { id: id } });
+  };
 
   return (
     <>
@@ -51,12 +51,12 @@ const ActivityList = ({ activities, dispatch }: ActivityListProps) => {
               </span>
             </p>
           </div>
-
           <div className="flex gap-5 items-center">
-            <button
-              onClick={()=>handleEdition(activity.id)}
-            >
-              <PencilSquareIcon className='size-8 text-gray-800' />
+            <button onClick={() => handleEdition(activity.id)}>
+              <PencilSquareIcon className="size-8 text-gray-800" />
+            </button>
+            <button onClick={() => dispatch({ type: "delete-activeId", payload: { id: activity.id } })}>
+              <XCircleIcon className="size-8 text-red-500" />
             </button>
           </div>
         </div>
