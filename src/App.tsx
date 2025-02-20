@@ -2,6 +2,7 @@ import { useEffect, useReducer } from "react";
 import Form from "./components/Form";
 import { formDataReducer, initialState } from "./reducers/formData-reducer";
 import ActivityList from "./components/ActivityList";
+import CalorieTracker from "./components/CalorieTracker";
 
 function App() {
   const [state, dispatch] = useReducer(formDataReducer, initialState);
@@ -10,15 +11,19 @@ function App() {
     localStorage.setItem("activities", JSON.stringify(state.activities));
   }, [state.activities]);
 
-  const restartApp = () => {
-    localStorage.clear();
-    dispatch({type:'restart-app'})
-  };
+  const canRestart = () => state.activities.length > 0;
+
   return (
     <>
       <header className="bg-lime-600 w-full p-5 flex justify-around">
         <h1 className="font-bold text-white uppercase text-xl">Contador de Calorias</h1>
-        <button onClick={() => restartApp()}>Reiniciar App</button>
+        <button
+          onClick={() => dispatch({ type: "restart-app" })}
+          className="bg-gray-800 hover:bg-gray-900 p-2 font-bold uppercase text-white cursor-pointer rounded-lg text-sm disabled:cursor-not-allowed disabled:text-gray-500"
+          disabled={!canRestart()}
+        >
+          Reiniciar App
+        </button>
       </header>
       <section className="bg-lime-500 py-20">
         {/* contendor "centrador-brocha gorda" que rodea al Componente */}
@@ -27,9 +32,19 @@ function App() {
         </div>
       </section>
       {state.activities.length > 0 ? (
+        <>
+        <section className="bg-gray-800">
+          <div className="mx-auto max-w-4xl">
+            <CalorieTracker 
+              activities={state.activities}
+            />
+          </div>
+
+        </section>
         <section className="p-10 mx-auto max-w-4xl">
           <ActivityList activities={state.activities} dispatch={dispatch} />
         </section>
+        </>
       ) : (
         <h2 className="text-center font-bold text-4xl text-slate-600 p-10">Registra una nueva actividad</h2>
       )}
@@ -49,4 +64,6 @@ export default App;
 /*
   LocalStorage: nos servimos del State en APP.tx para setear localStorage ya que al detectar cualquier cambio en el state por medio de un useEffect ya sabemos que debemos actualizar localStorage.
   Inicializamos el storage en el reducer y verificamos si hay algo en el storage lo seteamos y sino lo inicializamos en un array vacio.
+
+  Boton canRestart: la logica es asi: si hay algo en activities (activities.length > 0) entonces Sí se puede reiniciar, es decir, el valor de canRestart (se puede reiniciar) es TRUE. El atributo disabled en el html que dice? disabled={tal cosa}, si el valor de canRestart es true diria disabled= true y aplica los estilos correspondientes a cuando esta deshabilitado (disabled), entonces para que que se apliquen los estilos para NO deshabilitados el valor de canRestart debe ser FALSE. Por eso se NIEGA ! el valor de canREstart, en semantica humana es deshabilitar cuando NO se puede reiniciar--->> disbled={!canRestart()}
 */

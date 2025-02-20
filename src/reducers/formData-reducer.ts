@@ -130,8 +130,9 @@ export const formDataReducer = (state: formDataState = initialState, action: for
 
   if (action.type === "restart-app") {
     return {
-      ...state,
       activities: [],
+      activeId: "",
+      editing: false,
     };
   }
 

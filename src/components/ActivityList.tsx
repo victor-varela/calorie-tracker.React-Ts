@@ -35,7 +35,7 @@ const ActivityList = ({ activities, dispatch }: ActivityListProps) => {
     <>
       <h2 className="text-center font-bold text-4xl text-slate-600">Comida y Actividades</h2>
       {activities.map(activity => (
-        <div key={activity.id} className="px-5 py-10 bg-white mt-5 flex justify-between">
+        <div key={activity.id} className="px-5 py-10 bg-white mt-5 flex justify-between shadow">
           <div className="space-y-1 relative">
             <p
               className={`absolute -top-8 -left-8 px-10 py-2 font-bold text-white uppercase ${getCategoryColor(
